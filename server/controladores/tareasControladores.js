@@ -6,7 +6,7 @@ import { pool } from "../db.js";
 export const getMeridianos = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM meridianos "
+      "SELECT * FROM meridianos ORDER BY nombremeridiano DESC"
     );
     res.json(result);
   } catch (error) {
