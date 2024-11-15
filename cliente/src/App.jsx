@@ -5,6 +5,8 @@ import FormularioTareas from "./paginas/FormularioTareas";
 import NoEncontrado from "./paginas/NoEncontrado";
 import NavBar from "./componentes/NavBar";
 import TablaMeridianos from "./paginas/TablaMeridianos";
+// src/index.js o src/App.js
+import './index.css'
 
 function App() {
   return (
