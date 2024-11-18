@@ -2,13 +2,28 @@ import { Router } from "express";
 import {
   getMeridianos,
   getMeridiano,
-  actualizarMeridiano
+  actualizarMeridiano,
+  getMeridianosOrden,
+  getMeridianosSoploAsc,
+  getMeridianosSoploDesc,
+  getMeridianosTipoAsc,
+  getMeridianosTipoDesc,
+  getMeridianosPuntosAsc,
+  getMeridianosPuntosDesc
  
 } from "../controladores/tareasControladores.js";
 
 const router = Router();
 
-router.get("/meridiano", getMeridianos);
+router.get("/meridianoasc", getMeridianos);
+router.get("/meridianodesc", getMeridianosOrden);
+router.get("/soploasc", getMeridianosSoploAsc);
+router.get("/soplodesc", getMeridianosSoploDesc);
+router.get("/tipoasc", getMeridianosTipoAsc);
+router.get("/tipodesc", getMeridianosTipoDesc);
+router.get("/puntosasc", getMeridianosPuntosAsc);
+router.get("/puntosdesc", getMeridianosPuntosDesc);
+
 router.get("/meridiano/:id", getMeridiano);
 router.put("/meridiano/:id", actualizarMeridiano);
 

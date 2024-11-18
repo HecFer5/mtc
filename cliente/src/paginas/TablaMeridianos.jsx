@@ -1,18 +1,19 @@
 import axios from "axios";
-// import { isPromise } from 'formik'
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { Bars3BottomRightIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import FichaMeridiano from "./FichaMeridiano";
 
 const TablaMeridianos = () => {
   const [registros, setRegistros] = useState([]);
-
-  const [busqueda, setBusqueda] = useState(""); // <-- nuevo estado para búsqueda
+  const [ordenAscendente, setOrdenAscendente] = useState(true);
+  const [ordenSoplo, setOrdenSoplo] = useState(true);
+  const [ordenTipo, setOrdenTipo] = useState(true);
+  const [ordenPuntos, setOrdenPuntos] = useState(true);
 
   const navigate = useNavigate();
 
   const ListarMeridianos = async () =>
-    await axios.get("http://localhost:4000/meridiano").then((response) => {
+    await axios.get("http://localhost:4000/meridianoasc").then((response) => {
       const data = response.data;
       setRegistros(data);
     });
@@ -20,6 +21,87 @@ const TablaMeridianos = () => {
   useEffect(() => {
     ListarMeridianos();
   }, []);
+
+  const OrdenMeridianos = async () => {
+    try {
+      if (ordenAscendente) {
+        const response = await axios.get("http://localhost:4000/meridianodesc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera descendente");
+      } else {
+        const response = await axios.get("http://localhost:4000/meridianoasc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera ascendente");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+    } finally {
+      setOrdenAscendente(!ordenAscendente);
+    }
+  };
+
+  const OrdenSoplo = async () => {
+    try {
+      if (ordenSoplo) {
+        const response = await axios.get("http://localhost:4000/soplodesc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera descendente");
+      } else {
+        const response = await axios.get("http://localhost:4000/soploasc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera ascendente");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+    } finally {
+      setOrdenSoplo(!ordenSoplo);
+    }
+  };
+
+  const OrdenTipo = async () => {
+    try {
+      if (ordenTipo) {
+        const response = await axios.get("http://localhost:4000/tipodesc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera descendente");
+      } else {
+        const response = await axios.get("http://localhost:4000/tipoasc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera ascendente");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+    } finally {
+      setOrdenTipo(!ordenTipo);
+    }
+  };
+
+  const OrdenPuntos = async () => {
+    try {
+      if (ordenPuntos) {
+        const response = await axios.get("http://localhost:4000/puntosdesc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera descendente");
+      } else {
+        const response = await axios.get("http://localhost:4000/puntosasc");
+        const data = response.data;
+        setRegistros(data);
+        console.log("Ordenando de manera ascendente");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+    } finally {
+      setOrdenPuntos(!ordenPuntos);
+    }
+  };
+
 
   return (
     <>
@@ -31,28 +113,26 @@ const TablaMeridianos = () => {
                 <table className="min-w-full text-left text-sm font-light">
                   <thead className="border-b bg-gray-400 font-medium dark:border-neutral-500 dark:bg-neutral-600 sticky top-0 z-10">
                     <tr>
-                      <th scope="col" className="px-6 py-4 text-red-500">
-                        TIPO
+                    <th scope="col" className="px-6 py-4">
+                        <div className="flex flex-col items-start">
+                          <div className="flex space-x-2 mt-1">
+                            <button
+                              onClick={() => OrdenTipo()}
+                              className="text-black hover:text-blue-700 underline"
+                            >
+                              TIPO 
+                            </button>
+                          </div>
+                        </div>
                       </th>
                       <th scope="col" className="px-6 py-4">
                         <div className="flex flex-col items-start">
-                          <span>MERIDIANO</span>
                           <div className="flex space-x-2 mt-1">
                             <button
-                              onClick={() =>
-                                handleSort("nombremeridiano", "asc")
-                              }
-                              className="text-blue-500 hover:text-blue-700"
+                              onClick={() => OrdenMeridianos()}
+                              className="text-black hover:text-blue-700 underline"
                             >
-                              ▲
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleSort("nombremeridiano", "desc")
-                              }
-                              className="text-blue-500 hover:text-blue-700"
-                            >
-                              ▼
+                              MERIDIANO
                             </button>
                           </div>
                         </div>
@@ -63,14 +143,28 @@ const TablaMeridianos = () => {
                       <th scope="col" className="px-6 py-4">
                         NOM.
                       </th>
-                      <th scope="col" className="px-6 py-4">
+                      <th scope="col" className="px-6 py-4 text-grey-500">
                         RELACION VERTICAL
                       </th>
                       <th scope="col" className="px-6 py-4">
-                        PUNTOS
+                        <div className="flex flex-col items-start">
+                          <div className="flex space-x-2 mt-1">
+                          <button
+                          onClick={() => OrdenPuntos()}
+                          className="text-black hover:text-blue-700 underline"
+                        >
+                          PUNTOS
+                        </button>
+                          </div>
+                        </div>
                       </th>
                       <th scope="col" className="px-6 py-4">
-                        SOPLO
+                        <button
+                          onClick={() => OrdenSoplo()}
+                          className="text-black hover:text-blue-700 underline"
+                        >
+                          SOPLO
+                        </button>
                       </th>
                       <th scope="col" className="px-6 py-4"></th>
                       <th scope="col" className="px-6 py-4"></th>
@@ -126,6 +220,15 @@ const TablaMeridianos = () => {
                             <td className="whitespace-nowrap px-6 py-4 font-bold">
                               {registro.soplo || ""}
                             </td>
+                            <td>
+                          <button
+                       className="block bg-blue-300 font-semibold ml-4 px-2 py-1 text-black w-min rounded-md"
+                       onClick={() => navigate(`/fichameridiano/${registro.idmeridiano}`)}
+                          >
+                            Editar
+                          </button>
+                        </td>
+
                           </tr>
                         )
                     )}

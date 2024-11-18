@@ -6,6 +6,17 @@ import { pool } from "../db.js";
 export const getMeridianos = async (req, res) => {
   try {
     const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY nombremeridiano ASC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosOrden = async (req, res) => {
+  try {
+    const [result] = await pool.query(
       "SELECT * FROM meridianos ORDER BY nombremeridiano DESC"
     );
     res.json(result);
@@ -14,6 +25,71 @@ export const getMeridianos = async (req, res) => {
   }
 };
 
+export const getMeridianosSoploAsc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY soplo ASC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosSoploDesc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY soplo DESC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosTipoAsc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY tipo ASC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosTipoDesc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY tipo DESC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosPuntosAsc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY puntos ASC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMeridianosPuntosDesc = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM meridianos ORDER BY puntos DESC"
+    );
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 // TRAE UNA MERIDIANO ESPECIFICO
 export const getMeridiano = async (req, res) => {

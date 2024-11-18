@@ -5,8 +5,8 @@ import FormularioTareas from "./paginas/FormularioTareas";
 import NoEncontrado from "./paginas/NoEncontrado";
 import NavBar from "./componentes/NavBar";
 import TablaMeridianos from "./paginas/TablaMeridianos";
-// src/index.js o src/App.js
 import './index.css'
+import FichaMeridiano from "./paginas/FichaMeridiano";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Route path="/" element={<Tareas />} />
         <Route path="/nuevatarea" element={<FormularioTareas />} />
         <Route path="/tablameridianos" element={<TablaMeridianos />} />
+        <Route path="/fichameridiano/:idmeridiano" element={<FichaMeridiano />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
     </>
