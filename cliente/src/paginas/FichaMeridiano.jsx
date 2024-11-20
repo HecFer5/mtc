@@ -1,94 +1,72 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import axios from "axios";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-export default function FichaMeridiano() {
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const { idmeridiano } = useParams();
-  const [registro, setRegistro] = useState(null); 
-
-  const ListarMeridiano = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4000/meridiano/${idmeridiano}`);
-      const data = response.data;
-      console.log(data); 
-      setRegistro(data); 
-    } catch (error) {
-      console.error("Error al obtener los datos:", error);
-    }
-  };
+const FichaMeridiano = () => {
+  const [registros, setRegistros] = useState([]); 
+  const params = useParams();
 
   useEffect(() => {
-    ListarMeridiano();
-  }, [idmeridiano]);
+    const traerTarea = async () => {
+      if (params.idmeridiano) {
+        console.log("ID del meridiano:", params.idmeridiano); 
+        const url = "http://localhost:4000/puntos/" + params.idmeridiano;
+        try {
+          const response = await axios.get(url);
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            setRegistros(response.data); 
+          } else {
+            setRegistros([]);
+          }
+        } catch (error) {
+          console.error("Error al traer la tarea:", error);
+          setRegistros([]);
+        }
+      }
+    };
+    traerTarea();
+  }, [params.idmeridiano]);
 
   return (
-    <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={{ ...style, overflowY: "auto" }}>
-          <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                <div className="overflow-hidden">
-                  <table className="min-w-full text-left text-sm font-light">
-                    <thead className="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
-                      <tr>
-                        <th scope="col" className="px-6 py-4"></th>
-                        <th scope="col" className="px-6 py-4">NOMBRE</th>
-                      </tr>
-                    </thead>
-                    <tbody className="table-group-divider">
-                      {registro ? ( 
-                        <tr
-                          key={registro.idmeridiano}
-                          className="border-e-4 bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700"
-                        >
-                          <td>
-                        
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4">{`${registro.nombremeridiano}, ${registro.nobrechino}`}</td>
-                        </tr>
-                      ) : (
-                        <tr>
-                          <td colSpan="2" className="text-center">
-                            No hay registros disponibles.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button className="block bg-red-700 px-2 py-1 text-white w-min rounded-md ml-auto mt-2">
-            <Link to={"/tablameridianos"}>Cancelar</Link>
-          </button>
-        </Box>
-      </Modal>
+    <div className='justify-center flex'>
+      <div className="w-full md:max-w-2xl bg-white border border-gray-700 rounded shadow p-5 mt-14">
+        <div>{`Número de orden: ${params.idmeridiano}`}</div>
+        {registros.length > 0 ? ( 
+          <table className="min-w-full mt-4">
+            <thead>
+              <tr>
+                <th className="border px-4 py-2">Punto</th>
+                <th className="border px-4 py-2">Nombre</th>
+                <th className="border px-4 py-2">Otro nombre</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+              {registros.map((registro) => (
+                <tr key={registro.idpuntos}>
+                  <td className="border px-4 py-2">{registro.punto}</td>
+                  <td className="border px-4 py-2">{`${registro.nombre} / ${registro.nombrech} o ${registro.nombrepy}`}</td>
+                  <td className="border px-4 py-2">{`${registro.nombre2} / ${registro.nombrech2} o ${registro.nombrepy2}`}</td>
+
+                 
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div>Cargando o no hay datos disponibles...</div>
+        )}
+        <div className='flex mt-4'>
+          <li className="block bg-green-700 mt-3 px-2 py-1 text-white text-center rounded-md w-full mr-14">
+            <Link to={'/vistahistoria/' + params.idmeridiano}>Ver historia</Link>
+          </li>
+          <li className="block bg-blue-700 mt-3 px-2 py-1 text-white text-center rounded-md w-full">
+            <Link to={'/tablameridianos/'}>Volver</Link>
+          </li>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default FichaMeridiano;

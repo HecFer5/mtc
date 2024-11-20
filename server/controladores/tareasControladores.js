@@ -124,3 +124,17 @@ export const actualizarMeridiano = async (req, res) => {
 
 
 
+////TRAE LOS DATOS DE LAS DOS TABLAS
+export const traeLosPuntos = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM meridianos m INNER JOIN puntos p ON m.idmeridiano = p.idmeridiano WHERE m.idmeridiano = ?",
+      [req.params.id]
+    );
+
+    // Asegúrate de que result[0] contenga los datos que necesitas
+    res.json(result[0]); // Cambia esto si el formato de resultado es diferente
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

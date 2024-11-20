@@ -9,7 +9,8 @@ import {
   getMeridianosTipoAsc,
   getMeridianosTipoDesc,
   getMeridianosPuntosAsc,
-  getMeridianosPuntosDesc
+  getMeridianosPuntosDesc,
+  traeLosPuntos
  
 } from "../controladores/tareasControladores.js";
 
@@ -25,6 +26,7 @@ router.get("/puntosasc", getMeridianosPuntosAsc);
 router.get("/puntosdesc", getMeridianosPuntosDesc);
 
 router.get("/meridiano/:id", getMeridiano);
+router.get("/puntos/:id", traeLosPuntos);
 router.put("/meridiano/:id", actualizarMeridiano);
 
 export default router;
