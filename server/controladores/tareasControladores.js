@@ -50,7 +50,7 @@ export const getMeridianosSoploDesc = async (req, res) => {
 export const getMeridianosTipoAsc = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM meridianos ORDER BY tipo ASC"
+      "SELECT * FROM meridianos ORDER BY tipo ASC, nombremeridiano ASC;"
     );
     res.json(result);
   } catch (error) {
@@ -61,7 +61,7 @@ export const getMeridianosTipoAsc = async (req, res) => {
 export const getMeridianosTipoDesc = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM meridianos ORDER BY tipo DESC"
+      "SELECT * FROM meridianos ORDER BY tipo DESC, nombremeridiano ASC"
     );
     res.json(result);
   } catch (error) {
